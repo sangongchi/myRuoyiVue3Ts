@@ -135,6 +135,7 @@ function setLayout() {
     height: 100%;
     line-height: 50px;
     display: flex;
+        align-items: center;
 
     &:focus {
       outline: none;
@@ -159,11 +160,15 @@ function setLayout() {
     }
 
     .avatar-container {
-      margin-right: 40px;
+    margin-right: 16px;
+      height: 100%;
+      display: flex;
 
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+           display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;

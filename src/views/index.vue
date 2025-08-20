@@ -1,7 +1,7 @@
 <template>
   <div>Index 首页</div>
 </template>
-<script setup>
+<script lang="ts" setup>
 onMounted(() => {
   console.log('---')
 })
