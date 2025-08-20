@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // 目标语言的版本
+    "module": "esnext", // 生成代码的模板标准
+    "moduleResolution": "node", // 模块解析策略，ts默认用node的解析策略
+    "strict": true, // 开启所有严格的类型检查
+    "jsx": "preserve", // 指定 jsx 格式
+    "sourceMap": true, // 生成目标文件的sourceMap文件
+    "resolveJsonModule": true, // 是否解析JSON 模块
+    "esModuleInterop": true, // 允许export=导出，由import from 导入
+    "lib": ["esnext", "dom"], // TS需要引用的库，即声明文件
+    "baseUrl": ".", // 解析非相对模块的基地址，默认是当前目录
+    "allowJs": true, // 允许编译器编译JS，JSX文件
+    "checkJs": false, // 允许在JS文件中报错，通常与allowJS一起使用
+    "paths": {
+      // 路径映射，相对于baseUrl
+      "@/*": ["src/*"]
+    },
+    "types": ["vite/client", "node"], // 加载的声明文件包
+    "allowSyntheticDefaultImports": true, // 用于允许从没有默认导出的模块中默认导入
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts", "types/**/*.d.ts"]
+}
