@@ -27,6 +27,7 @@
     "@vueuse/core": "10.11.0",
     "@zeronejs/utils": "^1.4.0",
     "axios": "0.28.1",
+    "crypto-js": "^4.2.0",
     "echarts": "5.4.0",
     "element-plus": "2.10.7",
     "file-saver": "2.0.5",
