@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# set -x  打开注释后会在打印执行的详细信息
+
+npx lint-staged

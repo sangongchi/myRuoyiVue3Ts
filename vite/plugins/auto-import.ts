@@ -2,7 +2,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 export default function createAutoImport() {
   return AutoImport({
-    imports: ['vue', 'vue-router', 'pinia'],
+    // 自动导入 Vue 相关函数
+    imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
     resolvers: [ElementPlusResolver()],
     dts: 'types/auto-imports.d.ts',
     // 解决eslint报错问题

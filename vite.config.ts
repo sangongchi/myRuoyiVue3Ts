@@ -12,14 +12,14 @@ export default defineConfig(({ mode, command }) => {
     // 例如 https://www.ruoyi.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.ruoyi.vip/admin/，则设置 baseUrl 为 /admin/。
     base: VITE_APP_ENV === 'production' ? '/' : '/',
     server: {
-      host: true,
+      host: '0.0.0.0',
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://localhost:8080',
+          target: 'http://127.0.0.1:8080',
           changeOrigin: true,
-          rewrite: p => p.replace(/^\/dev-api/, '')
+          rewrite: (p: string) => p.replace(/^\/dev-api/, '')
         }
       }
     },
@@ -34,7 +34,7 @@ export default defineConfig(({ mode, command }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks(id) {
+          manualChunks(id: any) {
             if (id.includes('element-plus/theme')) {
               return 'ele'
             }

@@ -44,7 +44,7 @@ export function updateData(data: any) {
 }
 
 // 删除字典数据
-export function delData(dictCode) {
+export function delData(dictCode: string) {
   return request({
     url: '/system/dict/data/' + dictCode,
     method: 'delete'

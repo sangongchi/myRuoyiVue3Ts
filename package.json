@@ -2,13 +2,24 @@
   "name": "ruo-yi-vue3-ts",
   "private": true,
   "version": "3.8.5",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build:dev": "vite build --mode development",
     "build:test": "vite build --mode test",
     "build:prod": "vite build --mode production",
     "preview": "vite preview",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "lint": "eslint . --no-fix",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --no-fix --quiet"
+    ],
+    "*.{json,css,scss}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.2",
@@ -43,6 +54,8 @@
     "eslint-plugin-prettier": "5.1.0",
     "eslint-plugin-vue": "^10.0.0",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
     "postcss": "^8.4.16",
     "prettier": "^3.3.3",
     "sass": "1.77.5",

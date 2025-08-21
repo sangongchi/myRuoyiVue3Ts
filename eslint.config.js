@@ -10,7 +10,11 @@ import prettier from 'eslint-plugin-prettier'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 const getGlobals = () => {
-  const base = { ...globals.browser }
+  const base = {
+    ...globals.browser,
+    __dirname: 'readonly',
+    process: 'readonly'
+  }
   try {
     const autoPath = path.resolve(process.cwd(), '.eslintrc-auto-import.json')
     if (fs.existsSync(autoPath)) {
@@ -57,7 +61,10 @@ export default [
       }
     },
     plugins: { '@typescript-eslint': tseslint },
-    rules: tseslint.configs.recommended.rules
+    rules: {
+      ...tseslint.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'off' // 允许定义为any
+    }
   },
   {
     files: ['**/*.vue'],
@@ -75,7 +82,7 @@ export default [
     rules: {
       ...eslintVue.configs['vue3-essential']?.rules,
       'no-debugger': 'off',
-      'no-unused-vars': 'warn'
+      // 'no-unused-vars': 'error'
     }
   }
 ]
