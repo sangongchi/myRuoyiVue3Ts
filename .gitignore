@@ -19,8 +19,7 @@ tests/**/coverage/
 *.github
 yarn*
 components.d.ts
-auto-imports.d.ts
-.eslintrc-auto-import.json
+autoImports.d.ts
 
 yarn.lock
 pnpm-lock.yaml

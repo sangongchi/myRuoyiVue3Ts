@@ -6,6 +6,7 @@ import download from '@/plugins/download'
 import { useDict } from '@/utils/dict'
 import { download as utilsDownload } from '@/utils/request'
 import { addDateRange, handleTree, parseTime, resetForm, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
+import type { ComponentInternalInstance as ComponentInstance } from 'vue'
 
 export {}
 declare module 'vue' {
@@ -34,6 +35,17 @@ declare module 'vue' {
 declare global {
   interface Window {
     VConsole: any
+  }
+
+    /** vue Instance */
+  declare type ComponentInternalInstance = ComponentInstance
+
+  /**
+   * 分页查询参数
+   */
+  declare type PageQuery = {
+    pageNum: number
+    pageSize: number
   }
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   // interface ImportMeta {}

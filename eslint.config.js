@@ -13,15 +13,16 @@ const getGlobals = () => {
   const base = {
     ...globals.browser,
     __dirname: 'readonly',
-    process: 'readonly'
+    process: 'readonly',
+    PageQuery: "readonly"  // 显式声明全局类型
   }
   try {
-    const autoPath = path.resolve(process.cwd(), '.eslintrc-auto-import.json')
+    const autoPath = path.resolve(process.cwd(), '.eslintrcAutoImport.json')
     if (fs.existsSync(autoPath)) {
       const json = JSON.parse(fs.readFileSync(autoPath, 'utf8'))
       if (json?.globals) return { ...base, ...json.globals }
     }
-  } catch {}
+  } catch { }
   return base
 }
 
@@ -31,9 +32,9 @@ export default [
       'dist/**',
       'node_modules/**',
       'screenShoot.js',
-      '.eslintrc-auto-import.json',
+      '.eslintrcAutoImport.json',
       'eslint.config.js',
-      'auto-imports.d.ts'
+      'autoImports.d.ts'
     ]
   },
   js.configs.recommended,
@@ -63,7 +64,14 @@ export default [
     plugins: { '@typescript-eslint': tseslint },
     rules: {
       ...tseslint.configs.recommended.rules,
-      '@typescript-eslint/no-explicit-any': 'off' // 允许定义为any
+      '@typescript-eslint/no-explicit-any': 'off', // 允许定义为any
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit": true,  // 允许逻辑与/或短路
+          "allowTernary": true        // 允许三目运算符
+        }
+      ]
     }
   },
   {

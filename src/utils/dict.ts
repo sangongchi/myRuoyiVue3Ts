@@ -1,5 +1,5 @@
 import useDictStore from '@/store/modules/dict'
-import { getDicts } from '@/api/system/dict/data'
+import { getDicts } from '@/api/system/dict'
 import { ref, toRefs } from 'vue'
 
 /**
@@ -8,7 +8,7 @@ import { ref, toRefs } from 'vue'
 export function useDict(...args: any[]) {
   const res = ref<any>({})
   return (() => {
-    args.forEach((dictType, index) => {
+    args.forEach((dictType) => {
       res.value[dictType] = []
       const dicts = useDictStore().getDict(dictType)
       if (dicts) {
