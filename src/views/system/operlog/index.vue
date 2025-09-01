@@ -226,7 +226,7 @@
 
 <script setup name="Operlog" lang="ts">
 import { getOperLogList, delOperlog, cleanOperlog } from '@/api/system/operLog'
-import { OperLogForm, OperLogQuery, OperLogVO } from '@/types/system/operLog'
+import type { OperLogForm, OperLogQuery, OperLogVO } from '@/types/system/operLog'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { sys_oper_type, sys_common_status } = toRefs<any>(proxy?.useDict('sys_oper_type', 'sys_common_status'))

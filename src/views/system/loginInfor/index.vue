@@ -136,7 +136,7 @@
 
 <script setup name="Logininfor" lang="ts">
 import { list, delLoginInfo, cleanLoginInfo, unlockLoginInfo } from '@/api/system/loginInfo'
-import { LoginInfoQuery, LoginInfoVO } from '@/types/system/loginInfo'
+import type { LoginInfoQuery, LoginInfoVO } from '@/types/system/loginInfo'
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const { sys_device_type } = toRefs<any>(proxy?.useDict('sys_device_type'))
