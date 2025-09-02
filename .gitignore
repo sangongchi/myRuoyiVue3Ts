@@ -20,6 +20,7 @@ tests/**/coverage/
 yarn*
 components.d.ts
 autoImports.d.ts
+.eslintcache
 
 yarn.lock
 pnpm-lock.yaml
