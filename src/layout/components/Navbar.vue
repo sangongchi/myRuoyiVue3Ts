@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TopNav from '@/components/TopNav/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
@@ -122,6 +121,7 @@ function setLayout() {
 
   .topmenu-container {
     position: absolute;
+    height: 100%;
     left: 50px;
   }
 

@@ -345,7 +345,7 @@ const handleClean = async () => {
 /** 导出按钮操作 */
 const handleExport = () => {
   proxy?.download(
-    'monitor/operlog/export',
+    'system/operlog/export',
     {
       ...queryParams.value
     },

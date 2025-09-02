@@ -11,7 +11,12 @@
     <el-sub-menu v-if="topMenus.length > Number(visibleNumber)" :style="{ '--theme': theme }" index="more">
       <template #title>更多菜单</template>
       <template v-for="(item, index) in topMenus">
-        <el-menu-item v-if="index >= Number(visibleNumber)" :key="index" :index="item.path">
+        <el-menu-item
+          v-if="index >= Number(visibleNumber)"
+          :key="index"
+          :index="item.path"
+          :style="{ '--theme': theme }"
+        >
           <svg-icon :icon-class="item.meta!.icon" />
           {{ item.meta!.title }}
         </el-menu-item>
@@ -108,6 +113,7 @@ function setVisibleNumber() {
 }
 
 function handleSelect(key: any, keyPath: any) {
+  console.log('keyPath', keyPath)
   currentIndex.value = key
   const route = routers.value.find(item => item.path === key)
   if (isHttp(key)) {
@@ -152,29 +158,38 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-.topmenu-container.el-menu--horizontal > .el-menu-item {
-  float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #999093 !important;
-  padding: 0 5px !important;
-  margin: 0 10px !important;
+<style lang="scss" scoped>
+.el-menu--horizontal.el-menu {
+  border: none;
 }
-
-.topmenu-container.el-menu--horizontal > .el-menu-item.is-active,
-.el-menu--horizontal > .el-sub-menu.is-active .el-submenu__title {
-  border-bottom: 2px solid #{'var(--theme)'} !important;
-  color: #303133;
+.el-menu-item {
+  float: left;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  margin: 0 10px;
+  color: var(--el-menu-text-color);
+  :deep(.svg-icon) {
+    margin-right: 4px;
+  }
+}
+.el-menu-item.is-active,
+.el-sub-menu.is-active .el-submenu__title {
+  border-bottom: 2px solid var(--el-color-primary);
 }
 
 /* sub-menu item */
-.topmenu-container.el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
-  float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #999093 !important;
-  padding: 0 5px !important;
-  margin: 0 10px !important;
+.el-sub-menu {
+  :deep(.el-sub-menu__title) {
+    display: flex;
+    float: left;
+    align-items: center;
+    .el-icon {
+      position: relative;
+      right: auto;
+      margin-top: 0;
+      top: auto;
+    }
+  }
 }
 </style>

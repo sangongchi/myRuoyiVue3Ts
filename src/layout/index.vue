@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar v-if="!sidebar.hide" class="sidebar-container" />
+    <Sidebar v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar @setLayout="setLayout" />
@@ -17,7 +17,6 @@
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
-import defaultSettings from '@/settings'
 
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
@@ -25,7 +24,6 @@ import { computed, watchEffect, ref } from 'vue'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
-const sideTheme = computed(() => settingsStore.sideTheme)
 const sidebar = computed(() => useAppStore().sidebar)
 const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
@@ -38,7 +36,7 @@ const classObj = computed(() => ({
   mobile: device.value === 'mobile'
 }))
 
-const { width, height } = useWindowSize()
+const { width } = useWindowSize()
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
 watchEffect(() => {

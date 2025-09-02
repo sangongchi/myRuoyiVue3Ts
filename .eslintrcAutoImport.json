@@ -36,6 +36,7 @@
     "ElForm": true,
     "ElTree": true,
     "ElMessage": true,
+    "ElMessageBox": true,
     "Component": true,
     "ComponentPublicInstance": true,
     "ComputedRef": true,

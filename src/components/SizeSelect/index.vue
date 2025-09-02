@@ -22,16 +22,12 @@
 
 <script setup lang="ts">
 import useAppStore from '@/store/modules/app'
-import { computed, getCurrentInstance, ComponentInternalInstance, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const appStore = useAppStore()
 const size = computed(() => appStore.size)
-const route = useRoute()
-const router = useRouter()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const sizeOptions = ref([
-  { label: '较大', value: 'large' },
+  // { label: '较大', value: 'large' }, // 根据项目需要先去除较大的设置，不实用
   { label: '默认', value: 'default' },
   { label: '稍小', value: 'small' }
 ])
