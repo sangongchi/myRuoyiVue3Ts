@@ -9,6 +9,8 @@ import { saveAs } from 'file-saver'
 import useUserStore from '@/store/modules/user'
 import { encryptBase64, encryptWithAes, generateAesKey, decryptWithAes, decryptBase64 } from '@/utils/crypto'
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import { cancelRequestFun, getReuquetstr } from './cancelReuqest'
+const { addRequest } = cancelRequestFun()
 
 const ENCRYPTHEADER = 'encrypt-key'
 
@@ -38,6 +40,12 @@ service.interceptors.request.use(
     const isRepeatSubmit = config.headers.repeatSubmit === false
     // 是否需要加密
     const isEncrypt = config.headers.isEncrypt === 'true'
+    
+    // 取消请求逻辑
+    const requestKey = getReuquetstr(config)
+    console.log('requestKey',requestKey)
+    const signal = addRequest(requestKey)
+    config.signal = signal
 
     if (getToken() && !isToken) {
       config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
@@ -88,7 +96,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log(error)
+    console.log('confiError',error)
     Promise.reject(error)
   }
 )
@@ -162,6 +170,11 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error)
+    // 取消接口请求的情况，拦截报错
+    if((error+'').includes('CanceledError')){
+      console.warn('接口取消请求',error.config.url)
+      return
+    }
     let { message } = error
     if (message === 'Network Error') {
       message = '后端接口连接异常'
