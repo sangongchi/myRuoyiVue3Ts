@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="activeMenu" mode="horizontal" :ellipsis="false" @select="handleSelect">
+  <el-menu :default-active="activeMenu" mode="horizontal" :ellipsis="false" @select="handleSelect" menu-trigger="click">
     <template v-for="(item, index) in topMenus">
       <el-menu-item v-if="index < Number(visibleNumber)" :key="index" :style="{ '--theme': theme }" :index="item.path">
         <svg-icon :icon-class="item.meta?.icon" />
@@ -8,19 +8,26 @@
     </template>
 
     <!-- 顶部菜单超出数量折叠 -->
-    <el-sub-menu v-if="topMenus.length > Number(visibleNumber)" :style="{ '--theme': theme }" index="more">
+    <el-sub-menu
+      v-if="topMenus.length > Number(visibleNumber)"
+      :style="{ '--theme': theme }"
+      index="more"
+      mode="horizontal"
+    >
       <template #title>更多菜单</template>
-      <template v-for="(item, index) in topMenus">
-        <el-menu-item
-          v-if="index >= Number(visibleNumber)"
-          :key="index"
-          :index="item.path"
-          :style="{ '--theme': theme }"
-        >
-          <svg-icon :icon-class="item.meta!.icon" />
-          {{ item.meta!.title }}
-        </el-menu-item>
-      </template>
+      <div class="col-menu">
+        <template v-for="(item, index) in topMenus">
+          <el-menu-item
+            v-if="index >= Number(visibleNumber)"
+            :key="index"
+            :index="item.path"
+            :style="{ '--theme': theme }"
+          >
+            <svg-icon :icon-class="item.meta?.icon" />
+            {{ item.meta?.title }}
+          </el-menu-item>
+        </template>
+      </div>
     </el-sub-menu>
   </el-menu>
 </template>
@@ -162,6 +169,7 @@ onMounted(() => {
 .el-menu--horizontal.el-menu {
   border: none;
 }
+
 .el-menu-item {
   float: left;
   display: flex;
@@ -169,10 +177,12 @@ onMounted(() => {
   padding: 0 8px;
   margin: 0 10px;
   color: var(--el-menu-text-color);
+
   :deep(.svg-icon) {
     margin-right: 4px;
   }
 }
+
 .el-menu-item.is-active,
 .el-sub-menu.is-active .el-submenu__title {
   border-bottom: 2px solid var(--el-color-primary);
@@ -184,12 +194,24 @@ onMounted(() => {
     display: flex;
     float: left;
     align-items: center;
+
     .el-icon {
       position: relative;
       right: auto;
       margin-top: 0;
       top: auto;
     }
+  }
+}
+
+.col-menu {
+  display: flex;
+  flex-direction: column;
+  :deep(.el-menu-item) {
+    &.is-active {
+      border: none;
+    }
+    margin: 0;
   }
 }
 </style>

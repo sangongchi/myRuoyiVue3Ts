@@ -37,7 +37,8 @@ const classObj = computed(() => ({
 }))
 
 const { width } = useWindowSize()
-const WIDTH = 992 // refer to Bootstrap's responsive design
+// 宽度小于600设置设备为手机模式
+const WIDTH = 600 
 
 watchEffect(() => {
   if (device.value === 'mobile' && sidebar.value.opened) {

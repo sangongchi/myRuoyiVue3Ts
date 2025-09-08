@@ -1,38 +1,74 @@
+import { defineStore } from 'pinia'
 import defaultSettings from '@/settings'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
-import { defineStore } from 'pinia'
+import type { SettingsState } from '@/types'
 
-const { sideTheme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle } = defaultSettings
+const {
+  sideTheme,
+  showSettings,
+  topNav,
+  tagsView,
+  fixedHeader,
+  sidebarLogo,
+  dynamicTitle
+} = defaultSettings
 
-const storageSetting = JSON.parse(localStorage.getItem('layout-setting') ?? '{}') || ''
+// 本地存储操作抽象
+const getStorageSetting = (): Partial<SettingsState> => {
+  try {
+    return JSON.parse(localStorage.getItem('layout-setting') || '{}') || {}
+  } catch {
+    return {}
+  }
+}
 
-const useSettingsStore = defineStore('settings', {
-  state: () => ({
+export const useSettingsStore = defineStore('settings', () => {
+  // 状态声明
+  const state = reactive<SettingsState>({
     title: '',
-    theme: storageSetting.theme || '#409EFF',
-    sideTheme: storageSetting.sideTheme || sideTheme,
-    showSettings: showSettings,
-    topNav: storageSetting.topNav === undefined ? topNav : storageSetting.topNav,
-    tagsView: storageSetting.tagsView === undefined ? tagsView : storageSetting.tagsView,
-    fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
-    sidebarLogo: storageSetting.sidebarLogo === undefined ? sidebarLogo : storageSetting.sidebarLogo,
-    dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
-  }),
-  actions: {
-    // 修改布局设置
-    changeSetting(data: any) {
-      const { key, value } = data
-      if (this.hasOwnProperty(key)) {
-        Reflect.set(this, key, value)
-        // this[key] = value;
-      }
-    },
-    // 设置网页标题
-    setTitle(title: string) {
-      this.title = title
-      useDynamicTitle()
+    theme: getStorageSetting().theme || '#409EFF',
+    sideTheme: getStorageSetting().sideTheme || sideTheme,
+    showSettings,
+    topNav: getStorageSetting().topNav ?? topNav,
+    tagsView: getStorageSetting().tagsView ?? tagsView,
+    fixedHeader: getStorageSetting().fixedHeader ?? fixedHeader,
+    sidebarLogo: getStorageSetting().sidebarLogo ?? sidebarLogo,
+    dynamicTitle: getStorageSetting().dynamicTitle ?? dynamicTitle
+  })
+
+  // 操作方法
+  const changeSetting = <K extends keyof SettingsState>(key: K, value: SettingsState[K]) => {
+    if (key in state) {
+      state[key] = value
+      persistSettings()
     }
   }
+
+  const setTitle = (title: string) => {
+    state.title = title
+    useDynamicTitle()
+  }
+
+  // 持久化方法
+  const persistSettings = () => {
+    const persistState = {
+      theme: state.theme,
+      sideTheme: state.sideTheme,
+      topNav: state.topNav,
+      tagsView: state.tagsView,
+      fixedHeader: state.fixedHeader,
+      sidebarLogo: state.sidebarLogo,
+      dynamicTitle: state.dynamicTitle
+    }
+    localStorage.setItem('layout-setting', JSON.stringify(persistState))
+  }
+
+  return { 
+    ...toRefs(state),
+    changeSetting,
+    setTitle
+  }
 })
+
 
 export default useSettingsStore

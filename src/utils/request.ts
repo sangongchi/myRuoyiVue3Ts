@@ -43,7 +43,6 @@ service.interceptors.request.use(
     
     // 取消请求逻辑
     const requestKey = getReuquetstr(config)
-    console.log('requestKey',requestKey)
     const signal = addRequest(requestKey)
     config.signal = signal
 
