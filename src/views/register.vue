@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">后台管理系统</h3>
       <el-form-item prop="username">
         <el-input v-model="registerForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
@@ -79,7 +79,7 @@ const registerForm = ref({
   uuid: ''
 })
 
-const equalToPassword = (rule: any, value: any, callback: (...args: any[]) => void) => {
+const equalToPassword = (_rule: any, value: any, callback: (...args: any[]) => void) => {
   if (registerForm.value.password !== value) {
     callback(new Error('两次输入的密码不一致'))
   } else {
@@ -112,7 +112,7 @@ function handleRegister() {
     if (valid) {
       loading.value = true
       register(registerForm.value)
-        .then(res => {
+        .then(() => {
           const username = registerForm.value.username
           ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + ' 注册成功！</font>', '系统提示', {
             dangerouslyUseHTMLString: true,

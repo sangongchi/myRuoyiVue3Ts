@@ -12,7 +12,7 @@ import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
 import 'element-plus/es/components/loading/style/css'
 // tailwindcss
-import './index.css'
+import '@/assets/styles/tailwindcss.css'
 
 import App from './App.vue'
 import store from './store'
