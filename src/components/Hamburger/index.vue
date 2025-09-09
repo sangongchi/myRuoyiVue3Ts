@@ -35,6 +35,7 @@ const toggleClick = () => {
   vertical-align: middle;
   width: 20px;
   height: 20px;
+  fill:var(--el-menu-text-color)
 }
 
 .hamburger.is-active {

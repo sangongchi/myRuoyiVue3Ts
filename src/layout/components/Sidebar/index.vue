@@ -1,21 +1,16 @@
 <template>
-  <div
-    :class="{ 'has-logo': showLogo }"
-    :style="{
-      backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground
-    }"
-  >
+  <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
+    <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
-        :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
         :unique-opened="true"
-        :active-text-color="theme"
+        :active-text-color="themeColor"
         :collapse-transition="false"
-        mode="vertical"
+        :popper-append-to-body="false"
+        menu-trigger="click"
+        :mode="mode"
       >
         <sidebar-item
           v-for="(routeItem, index) in sidebarRouters"
@@ -31,12 +26,17 @@
 <script setup lang="ts">
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
-import variables from '@/assets/styles/variables.module.scss'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
-import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+
+ defineProps({
+  mode: {
+    type: String,
+    default: 'vertical'
+  }
+})
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -45,8 +45,7 @@ const permissionStore = usePermissionStore()
 
 const sidebarRouters = computed(() => permissionStore.sidebarRouters)
 const showLogo = computed(() => settingsStore.sidebarLogo)
-const sideTheme = computed(() => settingsStore.sideTheme)
-const theme = computed(() => settingsStore.theme)
+const themeColor = computed(() => settingsStore.themeColor)
 const isCollapse = computed(() => !appStore.sidebar.opened)
 
 const activeMenu = computed(() => {

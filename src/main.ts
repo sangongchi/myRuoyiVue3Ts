@@ -4,6 +4,8 @@ import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/es/locale/lang/zh-cn' // 中文语言
+// 引入暗色样式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import '@/assets/styles/index.scss' // global css
 // element css

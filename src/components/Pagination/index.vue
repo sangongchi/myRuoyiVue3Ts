@@ -94,12 +94,26 @@ function handleCurrentChange(val: number) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagination-container {
-  background: #fff;
-  padding: 32px 16px;
+  height: 25px;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
-.pagination-container.hidden {
-  display: none;
+</style>
+
+<style lang="scss">
+.pagination-container .el-pagination {
+  right: 0;
+  position: absolute;
+}
+
+@media (max-width: 768px) {
+  .pagination-container .el-pagination > .el-pagination__jump {
+    display: none !important;
+  }
+  .pagination-container .el-pagination > .el-pagination__sizes {
+    display: none !important;
+  }
 }
 </style>

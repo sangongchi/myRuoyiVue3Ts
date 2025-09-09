@@ -1,11 +1,11 @@
 // 处理主题样式
-export function handleThemeStyle(theme: string) {
-  document.documentElement.style.setProperty('--el-color-primary', theme)
+export function handleThemeStyle(themeColor: string) {
+  document.documentElement.style.setProperty('--el-color-primary', themeColor)
   for (let i = 1; i <= 9; i++) {
-    document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(theme, i / 10)}`)
+    document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(themeColor, i / 10)}`)
   }
   for (let i = 1; i <= 9; i++) {
-    document.documentElement.style.setProperty(`--el-color-primary-dark-${i}`, `${getDarkColor(theme, i / 10)}`)
+    document.documentElement.style.setProperty(`--el-color-primary-dark-${i}`, `${getDarkColor(themeColor, i / 10)}`)
   }
 }
 

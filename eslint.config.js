@@ -71,6 +71,14 @@ export default [
           "allowShortCircuit": true,  // 允许逻辑与/或短路
           "allowTernary": true        // 允许三目运算符
         }
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
+        }
       ]
     }
   },

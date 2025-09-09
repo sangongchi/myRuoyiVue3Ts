@@ -16,13 +16,12 @@
         </el-menu-item>
       </app-link>
     </template>
-
-    <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <!-- popper-append-to-body -->
+    <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" :popper-append-to-body="false">
       <template v-if="item.meta" #title>
         <svg-icon :icon-class="item.meta && item.meta.icon" />
         <span class="menu-title" :title="hasTitle(item.meta.title)">{{ item.meta.title }}</span>
       </template>
-
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
@@ -98,7 +97,10 @@ function resolvePath(routePath: any, routeQuery?: any) {
   }
   if (routeQuery) {
     let query = JSON.parse(routeQuery)
-    return { path: getNormalPath(props.basePath + '/' + routePath), query: query }
+    return {
+      path: getNormalPath(props.basePath + '/' + routePath),
+      query: query
+    }
   }
   return getNormalPath(props.basePath + '/' + routePath)
 }

@@ -8,7 +8,6 @@
         :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as any"
         class="tags-view-item"
-        :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
@@ -51,7 +50,6 @@
 import ScrollPane from './ScrollPane.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import useTagsViewStore from '@/store/modules/tagsView'
-import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
 import { ref, getCurrentInstance, ComponentInternalInstance, computed, onMounted, watch, nextTick } from 'vue'
@@ -70,7 +68,6 @@ const router = useRouter()
 
 const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
-const theme = computed(() => useSettingsStore().theme)
 
 watch(route, () => {
   addTags()
@@ -91,27 +88,20 @@ onMounted(() => {
 function isActive(r: any) {
   return r.path === route.path
 }
-function activeStyle(tag: any) {
-  if (!isActive(tag)) return {}
-  return {
-    'background-color': theme.value,
-    'border-color': theme.value
-  }
-}
 function isAffix(tag: any) {
   return tag.meta && tag.meta.affix
 }
 function isFirstView() {
   try {
     return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
-  } catch (err) {
+  } catch (_err) {
     return false
   }
 }
 function isLastView() {
   try {
     return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
-  } catch (err) {
+  } catch (_err) {
     return false
   }
 }
@@ -256,8 +246,7 @@ function handleScroll() {
 .tags-view-container {
   height: 34px;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
+  border-bottom: 1px solid var(--el-border-color);
   box-shadow:
     0 1px 3px 0 rgba(0, 0, 0, 0.12),
     0 0 3px 0 rgba(0, 0, 0, 0.04);
@@ -268,9 +257,10 @@ function handleScroll() {
       cursor: pointer;
       height: 26px;
       line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
+      border: 1px solid var(--el-border-color);
+      // color: #495060;
+      // background: #fff;
+      color: var(--el-text-color-regular);
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
@@ -282,9 +272,9 @@ function handleScroll() {
         margin-right: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: var(--el-color-primary);
         color: #fff;
-        border-color: #42b983;
+        border-color: var(--el-color-primary);
         &::before {
           content: '';
           background: #fff;
@@ -322,7 +312,7 @@ function handleScroll() {
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 //reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
@@ -346,6 +336,9 @@ function handleScroll() {
         height: 12px !important;
       }
     }
+  }
+  :deep(.el-scrollbar__view) {
+    height: 100%;
   }
 }
 </style>

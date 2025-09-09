@@ -3,15 +3,8 @@ import defaultSettings from '@/settings'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
 import type { SettingsState } from '@/types'
 
-const {
-  sideTheme,
-  showSettings,
-  topNav,
-  tagsView,
-  fixedHeader,
-  sidebarLogo,
-  dynamicTitle
-} = defaultSettings
+const { showSettings, topNav, isRouterTop, tagsView, fixedHeader, sidebarLogo, dynamicTitle } =
+  defaultSettings
 
 // 本地存储操作抽象
 const getStorageSetting = (): Partial<SettingsState> => {
@@ -22,14 +15,14 @@ const getStorageSetting = (): Partial<SettingsState> => {
   }
 }
 
-export const useSettingsStore = defineStore('settings', () => {
+export const useSettingsStore: any = defineStore('settings', () => {
   // 状态声明
   const state = reactive<SettingsState>({
     title: '',
-    theme: getStorageSetting().theme || '#409EFF',
-    sideTheme: getStorageSetting().sideTheme || sideTheme,
+    themeColor: getStorageSetting().themeColor ?? '#409EFF',
     showSettings,
-    topNav: getStorageSetting().topNav ?? topNav,
+    topNav: getStorageSetting().topNav ?? topNav, // 主路由在顶部，子路由依然在左侧
+    isRouterTop: getStorageSetting().isRouterTop ?? isRouterTop,
     tagsView: getStorageSetting().tagsView ?? tagsView,
     fixedHeader: getStorageSetting().fixedHeader ?? fixedHeader,
     sidebarLogo: getStorageSetting().sidebarLogo ?? sidebarLogo,
@@ -37,7 +30,7 @@ export const useSettingsStore = defineStore('settings', () => {
   })
 
   // 操作方法
-  const changeSetting = <K extends keyof SettingsState>(key: K, value: SettingsState[K]) => {
+  const changeSetting = ({ key, value }: { key: keyof SettingsState; value: SettingsState[keyof SettingsState] }) => {
     if (key in state) {
       state[key] = value
       persistSettings()
@@ -52,9 +45,9 @@ export const useSettingsStore = defineStore('settings', () => {
   // 持久化方法
   const persistSettings = () => {
     const persistState = {
-      theme: state.theme,
-      sideTheme: state.sideTheme,
+      themeColor: state.themeColor,
       topNav: state.topNav,
+      isRouterTop: state.isRouterTop,
       tagsView: state.tagsView,
       fixedHeader: state.fixedHeader,
       sidebarLogo: state.sidebarLogo,
@@ -63,12 +56,11 @@ export const useSettingsStore = defineStore('settings', () => {
     localStorage.setItem('layout-setting', JSON.stringify(persistState))
   }
 
-  return { 
+  return {
     ...toRefs(state),
     changeSetting,
     setTitle
   }
 })
-
 
 export default useSettingsStore

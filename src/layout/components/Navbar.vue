@@ -1,14 +1,18 @@
 <template>
   <div class="navbar">
-    <hamburger
-      id="hamburger-container"
-      :is-active="appStore.sidebar.opened"
-      class="hamburger-container"
-      @toggleClick="toggleSideBar"
-    />
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!settingsStore.topNav" />
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="settingsStore.topNav" />
-
+    <div class="left-con">
+      <Sidebar v-if="isRouterTop" class="sidebar-container-horizontal" mode="horizontal" />
+      <template v-else>
+        <hamburger
+          id="hamburger-container"
+          :is-active="appStore.sidebar.opened"
+          class="hamburger-container"
+          @toggleClick="toggleSideBar"
+        />
+        <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" />
+        <TopNav id="topmenu-container" class="topmenu-container" v-if="topNav" />
+      </template>
+    </div>
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
         <header-search id="header-search" class="right-menu-item" />
@@ -50,13 +54,14 @@ import Hamburger from '@/components/Hamburger/index.vue'
 import Screenfull from '@/components/Screenfull/index.vue'
 import SizeSelect from '@/components/SizeSelect/index.vue'
 import HeaderSearch from '@/components/HeaderSearch/index.vue'
+import Sidebar from '@/layout/components/Sidebar/index.vue'
 import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
-const settingsStore = useSettingsStore()
+const { topNav, isRouterTop } = storeToRefs(useSettingsStore())
 
 function toggleSideBar() {
   appStore.toggleSideBar()
@@ -99,8 +104,13 @@ function setLayout() {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  display: flex;
+  justify-content: space-between;
+  .left-con {
+    display: flex;
+    align-items: center;
+  }
 
   .hamburger-container {
     line-height: 46px;

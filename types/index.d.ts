@@ -1,9 +1,9 @@
 export interface SettingsState {
   title: string
-  theme: string
-  sideTheme: string
+  themeColor: string
   showSettings: boolean
   topNav: boolean
+  isRouterTop: boolean
   tagsView: boolean
   fixedHeader: boolean
   sidebarLogo: boolean

@@ -1,7 +1,7 @@
 <template>
   <el-menu :default-active="activeMenu" mode="horizontal" :ellipsis="false" @select="handleSelect" menu-trigger="click">
     <template v-for="(item, index) in topMenus">
-      <el-menu-item v-if="index < Number(visibleNumber)" :key="index" :style="{ '--theme': theme }" :index="item.path">
+      <el-menu-item v-if="index < Number(visibleNumber)" :key="index" :style="{ '--theme': themeColor }" :index="item.path">
         <svg-icon :icon-class="item.meta?.icon" />
         {{ item.meta?.title }}
       </el-menu-item>
@@ -10,7 +10,7 @@
     <!-- 顶部菜单超出数量折叠 -->
     <el-sub-menu
       v-if="topMenus.length > Number(visibleNumber)"
-      :style="{ '--theme': theme }"
+      :style="{ '--theme': themeColor }"
       index="more"
       mode="horizontal"
     >
@@ -21,7 +21,7 @@
             v-if="index >= Number(visibleNumber)"
             :key="index"
             :index="item.path"
-            :style="{ '--theme': theme }"
+            :style="{ '--theme': themeColor }"
           >
             <svg-icon :icon-class="item.meta?.icon" />
             {{ item.meta?.title }}
@@ -55,7 +55,7 @@ const route = useRoute()
 const router = useRouter()
 
 // 主题颜色
-const theme = computed(() => settingsStore.theme)
+const themeColor = computed(() => settingsStore.themeColor)
 // 所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters)
 
@@ -120,9 +120,10 @@ function setVisibleNumber() {
 }
 
 function handleSelect(key: any, keyPath: any) {
-  console.log('keyPath', keyPath)
+  console.log('key', key, 'keyPath', keyPath)
   currentIndex.value = key
   const route = routers.value.find(item => item.path === key)
+  console.log('route-->', route)
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
     window.open(key, '_blank')
@@ -134,6 +135,10 @@ function handleSelect(key: any, keyPath: any) {
     // 显示左侧联动菜单
     activeRoutes(key)
     appStore.toggleSideBarHide(false)
+    // 主动切换至第一个子路由
+    if (route.children && route.children[0].path) {
+      router.push({ path: route.children[0].path })
+    }
   }
 }
 function activeRoutes(key: any) {
