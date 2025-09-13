@@ -34,7 +34,8 @@ export default [
       'screenShoot.js',
       '.eslintrcAutoImport.json',
       'eslint.config.js',
-      'autoImports.d.ts'
+      'autoImports.d.ts',
+      'uno.config.ts'
     ]
   },
   js.configs.recommended,
@@ -72,6 +73,9 @@ export default [
           "allowTernary": true        // 允许三目运算符
         }
       ],
+      /**
+       * 声明后不使用的变量   自动忽略 _ 前缀的变量 
+       */
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

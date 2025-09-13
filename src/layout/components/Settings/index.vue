@@ -6,7 +6,7 @@
     <div class="drawer-item">
       <span>主题颜色</span>
       <span class="comp-style">
-        <el-color-picker v-model="themeColor" :predefine="predefineColors" @change="themeChange" />
+        <el-color-picker v-model="themeColor" :predefine="predefineColors" @change="themeColorChange" />
       </span>
     </div>
 
@@ -94,7 +94,11 @@ const isDark = useDark({
   valueLight: 'light'
 })
 
-const toggleDark = () => useToggle(isDark)
+const toggleDark = async () => {
+  useToggle(isDark)
+  await nextTick()
+  handleThemeStyle(settingsStore.themeColor)
+}
 
 /** 是否需要topnav */
 const topNav = computed({
@@ -118,10 +122,10 @@ const isRouterTop = computed({
     // 设置整个路由在上面的时候，重置topNav的值
     if (val) {
       settingsStore.changeSetting({ key: 'topNav', value: false })
+      permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
     }
     if (!val) {
       appStore.toggleSideBarHide(false)
-      permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
     }
   }
 })
@@ -156,7 +160,7 @@ const dynamicTitle = computed({
   }
 })
 
-function themeChange(val: any) {
+function themeColorChange(val: any) {
   settingsStore.changeSetting({ key: 'themeColor', value: val })
   themeColor.value = val
   handleThemeStyle(val)

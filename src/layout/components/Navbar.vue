@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
-    <div class="left-con">
-      <Sidebar v-if="isRouterTop" class="sidebar-container-horizontal" mode="horizontal" />
+    <div class="left-con" :style="leftStyle">
+      <Sidebar ref="sideBarRef" v-if="isRouterTop" class="sidebar-container-horizontal" mode="horizontal" />
       <template v-else>
         <hamburger
           id="hamburger-container"
@@ -13,7 +13,7 @@
         <TopNav id="topmenu-container" class="topmenu-container" v-if="topNav" />
       </template>
     </div>
-    <div class="right-menu">
+    <div class="right-menu" ref="rightConRef">
       <template v-if="appStore.device !== 'mobile'">
         <header-search id="header-search" class="right-menu-item" />
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -63,6 +63,20 @@ const appStore = useAppStore()
 const userStore = useUserStore()
 const { topNav, isRouterTop } = storeToRefs(useSettingsStore())
 
+const rightConRef = ref<HTMLElement | null>(null)
+const navbarRightConW = ref(0)
+
+onMounted(async () => {
+  await nextTick()
+  navbarRightConW.value = rightConRef.value?.clientWidth || 0
+})
+
+const leftStyle = computed(() => {
+  return {
+    width: `calc(100% - ${navbarRightConW.value + 120}px)`
+  }
+})
+
 function toggleSideBar() {
   appStore.toggleSideBar()
 }
@@ -90,7 +104,6 @@ function logout() {
       location.href = '/index'
     })
   })
-  // .catch(() => {});
 }
 
 const emits = defineEmits(['setLayout'])
@@ -110,6 +123,10 @@ function setLayout() {
   .left-con {
     display: flex;
     align-items: center;
+    flex: 1;
+    .sidebar-container-horizontal {
+      width: 100%;
+    }
   }
 
   .hamburger-container {
@@ -173,6 +190,7 @@ function setLayout() {
       margin-right: 12px;
       height: 100%;
       display: flex;
+      flex-shrink: 0;
 
       .avatar-wrapper {
         margin-top: 5px;

@@ -38,12 +38,8 @@
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link.vue'
 import { getNormalPath } from '@/utils/ruoyi'
-// import subMenu from 'element-plus/es/components/menu/src/sub-menu';
-// import item from 'element-plus/es/components/space/src/item';
-import { ref } from 'vue'
 
 const props = defineProps({
-  // route object
   item: {
     type: Object,
     required: true
@@ -73,18 +69,14 @@ function hasOneShowingChild(children: any[] = [], parent: any) {
       return true
     }
   })
-
-  // When there is only one child router, the child router is displayed by default
   if (showingChildren.length === 1) {
     return true
   }
-
-  // Show parent if there are no child router to display
+  // 如果没有子路由则显示父路由
   if (showingChildren.length === 0) {
     onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
     return true
   }
-
   return false
 }
 

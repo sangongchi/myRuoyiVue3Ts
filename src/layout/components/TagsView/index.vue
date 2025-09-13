@@ -12,7 +12,7 @@
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ tag.title }}
-        <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
+        <span class="icon-con" v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
           <close class="el-icon-close" style="width: 1em; height: 1em; vertical-align: middle" />
         </span>
       </router-link>
@@ -252,14 +252,12 @@ function handleScroll() {
     0 0 3px 0 rgba(0, 0, 0, 0.04);
   .tags-view-wrapper {
     .tags-view-item {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       position: relative;
       cursor: pointer;
       height: 26px;
-      line-height: 26px;
       border: 1px solid var(--el-border-color);
-      // color: #495060;
-      // background: #fff;
       color: var(--el-text-color-regular);
       padding: 0 8px;
       font-size: 12px;
@@ -286,6 +284,14 @@ function handleScroll() {
           margin-right: 2px;
         }
       }
+      .icon-con {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 4px;
+      }
+    }
+    :deep(.el-scrollbar__view) {
+      height: 100%;
     }
   }
   .contextmenu {
@@ -308,37 +314,6 @@ function handleScroll() {
         background: #eee;
       }
     }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-//reset element css of el-icon-close
-.tags-view-wrapper {
-  .tags-view-item {
-    .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 2px;
-      border-radius: 50%;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transform-origin: 100% 50%;
-      &:before {
-        transform: scale(0.6);
-        display: inline-block;
-        vertical-align: -3px;
-      }
-      &:hover {
-        background-color: #b4bccc;
-        color: #fff;
-        width: 12px !important;
-        height: 12px !important;
-      }
-    }
-  }
-  :deep(.el-scrollbar__view) {
-    height: 100%;
   }
 }
 </style>

@@ -90,3 +90,45 @@
 .el-dropdown .el-dropdown-link {
   color: var(--el-color-primary) !important;
 }
+
+/**
+  设置form表单样式
+    缩小margin边距，统一label 字体权重、缩小校验提示文字
+*/
+.el-form {
+  .el-form-item {
+    margin-bottom: 8px;
+
+    .el-form-item__label-wrap {
+      margin-left: 5px;
+    }
+  }
+  .el-form-item__label {
+    padding-right: 5px;
+    font-weight: 600;
+  }
+  .el-form-item__error {
+    position: relative;
+    top: 0;
+    margin-top: -1px;
+    transform-origin: left bottom;
+    transform: scale(0.8);
+    padding-top: 0;
+  }
+}
+
+// 配置紧凑行表格
+.el-table {
+  font-size: 14px;
+
+  .el-table__cell {
+    padding: 4px 2px !important;
+    font-size: 14px !important;
+  }
+  .cell {
+    padding: 0 2px !important;
+    .el-link {
+      font-size: 14px !important;
+    }
+  }
+}

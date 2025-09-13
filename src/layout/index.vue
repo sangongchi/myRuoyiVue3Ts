@@ -7,11 +7,12 @@
       :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide, 'none-side': isRouterTop }"
       class="main-container"
     >
+      <!-- fixed-header 和app-main 中间不能增加别的元素，不然会影响appmain中相邻兄弟元素样式的设置效果 -->
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar @setLayout="setLayout" />
         <tags-view v-if="needTagsView" />
       </div>
-      <app-main />
+      <app-main class="" />
       <settings ref="settingRef" />
     </div>
   </div>
@@ -94,12 +95,14 @@ function setLayout() {
 }
 
 .fixed-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  width: calc(100% - #{$base-sidebar-width});
+  // position: fixed;
+  // top: 0;
+  // right: 0;
+  // z-index: 9;
+  // width: calc(100% - #{$base-sidebar-width});
+  width: 100%;
   transition: width 0.28s;
+  background-color: var(--el-menu-bg-color);
 }
 
 .hideSidebar .fixed-header {

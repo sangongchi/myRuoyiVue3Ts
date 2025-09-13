@@ -13,8 +13,9 @@ import 'element-plus/es/components/message/style/css'
 import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
 import 'element-plus/es/components/loading/style/css'
-// tailwindcss
-import '@/assets/styles/tailwindcss.css'
+
+// unocss
+import 'uno.css'
 
 import App from './App.vue'
 import store from './store'

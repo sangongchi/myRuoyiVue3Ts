@@ -42,6 +42,7 @@ const title = ref('管理系统')
   line-height: 50px;
   text-align: center;
   overflow: hidden;
+  flex-shrink: 0;
 
   .sidebar-logo-link {
     height: 100%;

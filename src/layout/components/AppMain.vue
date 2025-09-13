@@ -6,7 +6,7 @@
           <component v-if="!route.meta.link" :is="Component" :key="route.path" />
         </keep-alive>
       </transition>
-    </router-view>
+    </router-view> 
     <iframe-toggle />
   </section>
 </template>
@@ -28,7 +28,8 @@ const tagsViewStore = useTagsViewStore()
 }
 
 .fixed-header + .app-main {
-  padding-top: 50px;
+  height: calc(100vh - 50px);
+  overflow: auto;
 }
 
 .hasTagsView {
@@ -38,7 +39,8 @@ const tagsViewStore = useTagsViewStore()
   }
 
   .fixed-header + .app-main {
-    padding-top: 84px;
+    height: calc(100vh - 84px);
+    overflow: auto;
   }
 }
 </style>

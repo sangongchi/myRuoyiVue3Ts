@@ -2,6 +2,7 @@
   <div :class="{ show: show }" class="header-search">
     <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
     <el-select
+      v-show="show"
       ref="headerSearchSelectRef"
       v-model="search"
       :remote-method="querySearch"
@@ -9,7 +10,7 @@
       default-first-option
       remote
       placeholder="Search"
-      class="header-search-select"
+      class="header-search-select w-100px! ml-6px"
       @change="change"
     >
       <el-option
@@ -42,13 +43,9 @@ const routes = computed(() => usePermissionStore().routes)
 function click() {
   show.value = !show.value
   if (show.value) {
+    console.log('headerSearchSelectRef',headerSearchSelectRef.value)
     headerSearchSelectRef.value && headerSearchSelectRef.value.focus()
   }
-}
-function close() {
-  headerSearchSelectRef.value && headerSearchSelectRef.value.blur()
-  options.value = []
-  show.value = false
 }
 function change(val: any) {
   const path = val.path
@@ -137,14 +134,6 @@ watchEffect(() => {
   searchPool.value = generateRoutes(routes.value)
 })
 
-watch(show, value => {
-  if (value) {
-    document.body.addEventListener('click', close)
-  } else {
-    document.body.removeEventListener('click', close)
-  }
-})
-
 watch(searchPool, list => {
   initFuse(list)
 })
@@ -162,30 +151,6 @@ watch(searchPool, list => {
 
   .header-search-select {
     font-size: 18px;
-    transition: width 0.2s;
-    width: 0;
-    overflow: hidden;
-    background: transparent;
-    border-radius: 0;
-    display: inline-block;
-    vertical-align: middle;
-
-    :deep(.el-input__inner) {
-      border-radius: 0;
-      border: 0;
-      padding-left: 0;
-      padding-right: 0;
-      box-shadow: none !important;
-      border-bottom: 1px solid #d9d9d9;
-      vertical-align: middle;
-    }
-  }
-
-  &.show {
-    .header-search-select {
-      width: 210px;
-      margin-left: 10px;
-    }
   }
 }
 </style>
