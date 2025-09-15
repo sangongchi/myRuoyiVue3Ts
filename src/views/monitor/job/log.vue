@@ -146,7 +146,6 @@
 import { getJob } from '@/api/monitor/job'
 import { listJobLog, delJobLog, cleanJobLog } from '@/api/monitor/jobLog'
 import { parseTime } from '@/utils/ruoyi'
-import { oneOf } from '@zeronejs/utils'
 import { getCurrentInstance, ComponentInternalInstance, ref, reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -215,7 +214,7 @@ function handleView(row: any) {
   form.value = row
 }
 /** 删除按钮操作 */
-function handleDelete(row: any) {
+function handleDelete(_row: any) {
   proxy!.$modal
     .confirm('是否确认删除调度日志编号为"' + ids.value + '"的数据项?')
     .then(function () {
@@ -252,7 +251,7 @@ function handleExport() {
 }
 
 ;(() => {
-  const jobId = oneOf(route.params.jobId)
+  const jobId = route.params.jobId
   if (jobId !== undefined && jobId !== '0') {
     getJob(jobId).then(response => {
       queryParams.value.jobName = response.data.jobName

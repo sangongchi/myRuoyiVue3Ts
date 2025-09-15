@@ -63,6 +63,7 @@ function change(val: any) {
     show.value = false
   })
 }
+// 模糊搜索
 function initFuse(list: any) {
   fuse.value = new Fuse(list, {
     shouldSort: true,

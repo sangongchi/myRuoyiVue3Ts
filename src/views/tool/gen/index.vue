@@ -178,8 +178,6 @@
 <script setup name="Gen" lang="ts">
 import { listTable, previewTable, delTable, genCode, synchDb } from '@/api/tool/gen'
 import router from '@/router'
-import { oneOf } from '@zeronejs/utils'
-import { getCurrentInstance, ComponentInternalInstance, ref, reactive, toRefs, onActivated } from 'vue'
 import { useRoute } from 'vue-router'
 import importTable from './importTable.vue'
 
@@ -223,7 +221,7 @@ const data = reactive<{
 const { queryParams, preview } = toRefs(data)
 
 onActivated(() => {
-  const time = oneOf(route.query.t)
+  const time = route.query.t
   if (time && time !== uniqueId.value) {
     uniqueId.value = time
     queryParams.value.pageNum = Number(route.query.pageNum)
@@ -255,7 +253,7 @@ function handleGenTable(row: any) {
     return
   }
   if (row.genType === '1') {
-    genCode(row.tableName).then(response => {
+    genCode(row.tableName).then(_response => {
       proxy?.$modal.msgSuccess('成功生成到自定义路径：' + row.genPath)
     })
   } else {

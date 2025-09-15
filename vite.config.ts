@@ -17,7 +17,7 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://127.0.0.1:8080',
+          target: 'http://10.9.4.37:8080',
           changeOrigin: true,
           rewrite: (p: string) => p.replace(/^\/dev-api/, '')
         }
@@ -41,6 +41,30 @@ export default defineConfig(({ mode, command }) => {
           }
         }
       }
+    },
+    // 预编译(主要针对开发环境)
+    optimizeDeps: {
+      include: [
+        // UI 框架类
+        'element-plus',
+        'element-plus/es/components/message/style/css', // 样式深路径
+        '@element-plus/icons-vue',
+        // 图表类
+        'echarts',        
+        // 编辑器类
+        '@vueup/vue-quill',
+        
+        // 工具类
+        'crypto-js',
+        'jsencrypt',
+        'file-saver',
+        'fuse.js',
+        'es-toolkit',
+        // Vue 生态
+        'vue',
+        'pinia',
+        'vue-router'
+      ]
     }
   }
 })
