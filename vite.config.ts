@@ -47,7 +47,6 @@ export default defineConfig(({ mode, command }) => {
       include: [
         // UI 框架类
         'element-plus',
-        'element-plus/es/components/message/style/css', // 样式深路径
         '@element-plus/icons-vue',
         // 图表类
         'echarts',        

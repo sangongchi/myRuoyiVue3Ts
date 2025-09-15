@@ -6,6 +6,10 @@
 @import './btn.scss';
 @import './ruoyi.scss';
 
+:root {
+  --zoom-factor: 1;
+}
+
 body {
   height: 100%;
   margin: 0;

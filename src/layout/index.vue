@@ -104,16 +104,4 @@ function setLayout() {
   transition: width 0.28s;
   background-color: var(--el-menu-bg-color);
 }
-
-.hideSidebar .fixed-header {
-  width: calc(100% - 54px);
-}
-
-.sidebarHide .fixed-header {
-  width: 100%;
-}
-
-.mobile .fixed-header {
-  width: 100%;
-}
 </style>

@@ -21,25 +21,25 @@ const tagsViewStore = useTagsViewStore()
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh / var(--zoom-factor) - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
 .fixed-header + .app-main {
-  height: calc(100vh - 50px);
+  height: calc(100vh / var(--zoom-factor) - 50px);
   overflow: auto;
 }
 
 .hasTagsView {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
+    min-height: calc(100vh / var(--zoom-factor) - 84px);
   }
 
   .fixed-header + .app-main {
-    height: calc(100vh - 84px);
+    height: calc(100vh / var(--zoom-factor) - 84px);
     overflow: auto;
   }
 }
