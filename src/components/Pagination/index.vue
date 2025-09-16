@@ -99,6 +99,7 @@ function handleCurrentChange(val: number) {
   height: 25px;
   margin-bottom: 10px;
   margin-top: 20px;
+  position: relative;
 }
 </style>
 

@@ -1,4 +1,3 @@
-@import './variables.module.scss';
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
@@ -8,6 +7,11 @@
 
 :root {
   --zoom-factor: 1;
+  --shadow-color: rgba(0, 21, 41, 0.08);
+}
+$green: #4ab7bd;
+.green-btn {
+  @include colorBtn($green);
 }
 
 body {
@@ -125,7 +129,8 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  height: 100%;
+  padding: 16px;
 }
 
 .components-container {

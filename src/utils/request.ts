@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElNotification, ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
@@ -32,21 +32,24 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     config.headers = config.headers || {}
     // 是否需要设置 token
-    const isToken = config.headers.isToken === false
+    const isNeedToken = config.extrInfo?.isNeedToken || true
     // 是否需要防止数据重复提交
-    const isRepeatSubmit = config.headers.repeatSubmit === false
+    const isRepeatSubmit = config.extrInfo?.canRepeatSubmit || false
+    // 是否需要取消重复请求
+    const isNeedCancel = config.extrInfo?.isNeedCancel || false
     // 是否需要加密
-    const isEncrypt = config.headers.isEncrypt === 'true'
-    
-    // 取消请求逻辑
-    const requestKey = getReuquetstr(config)
-    const signal = addRequest(requestKey)
-    config.signal = signal
+    const isEncrypt = config.extrInfo?.isNeedEcrypt || false
 
-    if (getToken() && !isToken) {
+    // 所有get、或者配置取消逻辑的接口 重复请求取消前面的请求逻辑处理
+    if ((config.method === 'get' && !config.extrInfo?.isNotNeedGetAutoCancel) || isNeedCancel) {
+      const requestKey = getReuquetstr(config)
+      const signal = addRequest(requestKey)
+      config.signal = signal
+    }
+    if (getToken() && isNeedToken) {
       config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     // get请求映射params参数
@@ -95,7 +98,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log('confiError',error)
+    console.log('confiError', error)
     Promise.reject(error)
   }
 )
@@ -170,8 +173,8 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error)
     // 取消接口请求的情况，拦截报错
-    if((error+'').includes('CanceledError')){
-      console.warn('接口取消请求',error.config.url)
+    if ((error + '').includes('CanceledError')) {
+      console.warn('接口取消请求', error.config.url)
       return
     }
     let { message } = error

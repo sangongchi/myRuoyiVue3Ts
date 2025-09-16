@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': themeColor }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <Sidebar v-if="!sidebar.hide && !isRouterTop" class="sidebar-container" />
+    <Sidebar v-if="!sidebar.hide && !isRouterTop" class="sidebar-container shadow-right" />
 
     <div
       :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide, 'none-side': isRouterTop }"
@@ -70,7 +70,6 @@ function setLayout() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/mixin.scss';
-@import '@/assets/styles/variables.module.scss';
 
 .app-wrapper {
   @include clearfix;

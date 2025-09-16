@@ -6,7 +6,10 @@ export function listUser(query: any) {
   return request({
     url: '/system/user/list',
     method: 'get',
-    params: query
+    params: query,
+    extrInfo:{
+      isNotNeedGetAutoCancel:true
+    }
   })
 }
 

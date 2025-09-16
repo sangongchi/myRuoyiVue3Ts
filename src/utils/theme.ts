@@ -10,6 +10,7 @@ export function handleThemeStyle(themeColor: string) {
     for (let i = 1; i <= 9; i++) {
       document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getDarkColor(themeColor, i / 10)}`)
     }
+    document.documentElement.style.setProperty('--shadow-color', `rgba(255, 255, 255, 0.12)`)
   } else {
     for (let i = 1; i <= 9; i++) {
       document.documentElement.style.setProperty(
@@ -17,6 +18,7 @@ export function handleThemeStyle(themeColor: string) {
         `${getLightColor(themeColor, i / 10)}`
       )
     }
+     document.documentElement.style.setProperty('--shadow-color', `rgba(0, 21, 41, 0.08)`)
   }
 }
 

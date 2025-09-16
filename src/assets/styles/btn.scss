@@ -1,5 +1,3 @@
-@import './variables.module.scss';
-
 @mixin colorBtn($color) {
   background: $color;
 
@@ -11,10 +9,6 @@
       background: $color;
     }
   }
-}
-
-.green-btn {
-  @include colorBtn($green);
 }
 
 .pan-btn {

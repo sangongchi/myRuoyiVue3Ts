@@ -32,12 +32,34 @@ declare module 'vue' {
   }
 }
 
+declare module 'axios' {
+  // 添加自定义属性
+  interface InternalAxiosRequestConfig {
+    extrInfo?: {
+      isNeedCancel?: boolean // 是否需要取消重复请求
+      isNotNeedGetAutoCancel?: boolean // 禁止get自动取消重复请求
+      isNeedEcrypt?: boolean // 是否需要加密
+      isNeedToken?: boolean // 是否需要token
+      canRepeatSubmit?: boolean // 这个是通过时间间隔判断，直接抛错不走请求
+    }
+  }
+  interface AxiosRequestConfig {
+    extrInfo?: {
+      isNeedCancel?: boolean // 是否需要取消重复请求
+      isNotNeedGetAutoCancel?: boolean // 禁止get自动取消重复请求
+      isNeedEcrypt?: boolean // 是否需要加密
+      isNeedToken?: boolean // 是否需要token
+      canRepeatSubmit?: boolean // 这个是通过时间间隔判断，直接抛错不走请求
+    }
+  }
+}
+
 declare global {
   interface Window {
     VConsole: any
   }
 
-    /** vue Instance */
+  /** vue Instance */
   declare type ComponentInternalInstance = ComponentInstance
 
   /**

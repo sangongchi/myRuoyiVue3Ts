@@ -10,8 +10,8 @@ export function login(username: string, password: string, code: string, uuid: st
   }
   return request({
     url: '/auth/login',
-    headers: {
-      isToken: false
+    extrInfo: {
+      isNeedToken: false
     },
     method: 'post',
     data: data
@@ -22,8 +22,8 @@ export function login(username: string, password: string, code: string, uuid: st
 export function register(data: any) {
   return request({
     url: '/auth/register',
-    headers: {
-      isToken: false
+    extrInfo: {
+      isNeedToken: false
     },
     method: 'post',
     data: data
@@ -50,8 +50,8 @@ export function logout() {
 export function getCodeImg() {
   return request({
     url: '/code',
-    headers: {
-      isToken: false
+    extrInfo: {
+      isNeedToken: false
     },
     method: 'get',
     timeout: 20000

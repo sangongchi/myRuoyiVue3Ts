@@ -12,8 +12,8 @@ import {
 export default defineConfig({
   shortcuts: {
     'flex-center':'flex justify-center items-center',
-    'shadow-bottom':'shadow-[0_1px_3px_0_rgba(0,0,0,0.12),0_0_3px_0_rgba(0,0,0,0.04)]',
-    "shadow-right":'shadow-[2px_0_6px_rgba(0,21,41,0.35)]'
+    'shadow-bottom':'shadow-[0_1px_3px_0_var(--shadow-color)]',
+    "shadow-right":'shadow-[2px_0_4px_var(--shadow-color)]'
   },
   presets: [
     presetWind3,
