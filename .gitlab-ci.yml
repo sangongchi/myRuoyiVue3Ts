@@ -1,0 +1,134 @@
+# This file is a template, and might need editing before it works on your project.
+# Build JAVA applications using Apache Maven (http://maven.apache.org)
+# For docker image tags see https://hub.docker.com/_/maven/
+#
+# For general lifecycle information see https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+# This template will build and test your projects
+# * Caches downloaded dependencies and plugins between invocation.
+# * Verify but don't deploy merge requests.
+# * Deploy built artifacts from master branch only.
+# 流程
+stages: # List of stages for jobs, and their order of execution
+  - build
+  - containerize
+  - retag
+
+variables:
+  REPOSITORY_PULL_URL: kcr.kmcloud.kingmed.idc
+  REPOSITORY_PUSH_URL: kcr.kmcloud.kingmed.idc
+  REPOSITORY_PROJECT: $HARBOR_TENANT_PROJECT
+  REPOSITORY_ROBOT: $HARBOR_ROBOT_USERNAME
+  REPOSITORY_ROBOT_SECRET: $HARBOR_ROBOT_PASSWORD
+  HARBOR_REGISTRY: kcr.kmcloud.kingmed.idc
+  HARBOR_USERNAME: $HARBOR_ROBOT_USERNAME
+  HARBOR_PASSWORD: $HARBOR_ROBOT_PASSWORD
+  HARBOR_PROJECT: $HARBOR_TENANT_PROJECT
+  IMG_TAG_PREFIX: dev
+  DEPLOY_ENV: 'dev'
+  DOCKER_BUILD_ARGS: >-
+    --insecure-pull
+    --insecure
+  DOCKER_TAG_ARGS: >-
+    --insecure
+  PROJECT_NAME: project-ui
+
+cache:
+  key: '$CI_COMMIT_REF_SLUG'
+  paths:
+    - /opt/cache/
+
+build-job: # This job runs in the build stage, which runs first.
+  stage: build
+  image: kcr.kmcloud.kingmed.idc/library/node:18.19.0
+  script:
+    - echo "Compiling the code..."
+    - echo "build project for $CI_COMMIT_BRANCH with $CI_COMMIT_SHORT_SHA"
+    - |
+      if [ $CI_COMMIT_REF_NAME == "develop" ]; then
+        DEPLOY_ENV='dev'
+      fi
+      if [ $CI_COMMIT_REF_NAME == "release" ]; then
+        DEPLOY_ENV='test'
+      fi
+      if [ $CI_COMMIT_REF_NAME == "master" ]; then
+        DEPLOY_ENV='prod'
+      fi
+    - 'pwd'
+    - 'node -v'
+    - 'npm -v'
+    - npm set strict-ssl false
+    - npm install --registry=http://nexus.kmcloud.kingmed.idc/nexus/repository/npm-group/
+    - npm run build:$DEPLOY_ENV
+    - echo "Compile complete."
+  artifacts:
+    paths:
+      - dist
+      - node_modules
+  only:
+    - develop
+    - /release.*$/
+    - master
+
+containerize:project-ui:
+  stage: containerize
+  image:
+    name: kcr.kmcloud.kingmed.idc/kce/kaniko-project/executor:debug
+    entrypoint: ['']
+  script:
+    - echo "Running containerize... This will take about 60 seconds."
+    - export IMG_TAG=$IMG_TAG_PREFIX\_$CI_COMMIT_SHORT_SHA
+    - echo "build image $IMAGE_NAME:$IMG_TAG"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${REPOSITORY_PUSH_URL}\":{\"auth\":\"$(printf "%s:%s" "${REPOSITORY_ROBOT}" "${REPOSITORY_ROBOT_SECRET}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - cat /kaniko/.docker/config.json
+
+    - >-
+      /kaniko/executor
+      --insecure-pull
+      --insecure
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/docker/Dockerfile"
+      --destination "${IMAGE_NAME}:${IMG_TAG}"
+    - |
+      echo "*******************************************************************"
+      echo 📦 ${HARBOR_REGISTRY}/${HARBOR_PROJECT}/${IMAGE_NAME}:${TAG}
+      echo "*******************************************************************"
+
+  variables:
+    IMAGE_NAME: $REPOSITORY_PUSH_URL/$REPOSITORY_PROJECT/$PROJECT_NAME
+
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "develop"
+      variables:
+        IMG_TAG_PREFIX: 'dev'
+      when: manual
+    - if: $CI_COMMIT_REF_NAME == "release"
+      variables:
+        IMG_TAG_PREFIX: 'qa'
+      when: manual
+    - if: $CI_COMMIT_REF_NAME == "master"
+      variables:
+        IMG_TAG_PREFIX: 'prod'
+      when: manual
+
+retag:
+  stage: retag
+  image:
+    name: kcr.kmcloud.kingmed.idc/kce/go-containerregistry/crane:debug
+    entrypoint: ['']
+  variables:
+    IMAGE_NAME: $REPOSITORY_PUSH_URL/$REPOSITORY_PROJECT/$PROJECT_NAME
+    SRC_TAG: ${SRC_IMG_TAG_PREFIX}_${CI_COMMIT_SHORT_SHA}
+    TARGET_TAG: ${TARGET_IMG_TAG_PREFIX}_${CI_COMMIT_SHORT_SHA}
+  script:
+    - mkdir -p /root/.docker
+    - echo "{\"auths\":{\"$HARBOR_REGISTRY\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" > /root/.docker/config.json
+    - /ko-app/crane tag ${IMAGE_NAME}:${SRC_TAG} ${TARGET_TAG}
+      $DOCKER_TAG_ARGS
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "develop"
+      variables:
+        SRC_IMG_TAG_PREFIX: 'dev'
+        TARGET_IMG_TAG_PREFIX: 'qa'
+      when: manual
