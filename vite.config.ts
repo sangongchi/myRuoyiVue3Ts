@@ -20,6 +20,13 @@ export default defineConfig(({ mode, command }) => {
           target: 'http://10.9.4.37:8080',
           changeOrigin: true,
           rewrite: (p: string) => p.replace(/^\/dev-api/, '')
+        },
+        // 切片
+        '/slideviewer': {
+          target: 'https://kmdp-test.kingmed.com.cn/slideviewer',
+          changeOrigin: true,
+          ws: true,
+          rewrite: path => path.replace(/^\/slideviewer/, '')
         }
       }
     },
@@ -32,6 +39,7 @@ export default defineConfig(({ mode, command }) => {
       }
     },
     build: {
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks(id: any) {
@@ -49,10 +57,10 @@ export default defineConfig(({ mode, command }) => {
         'element-plus',
         '@element-plus/icons-vue',
         // 图表类
-        'echarts',        
+        'echarts',
         // 编辑器类
         '@vueup/vue-quill',
-        
+
         // 工具类
         'crypto-js',
         'jsencrypt',

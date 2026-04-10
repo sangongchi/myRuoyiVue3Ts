@@ -88,6 +88,50 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/slice',
+    component: Layout,
+    meta: { title: '切片管理', icon: 'dashboard' },
+    children: [
+      {
+        path: '',
+        name: 'sliceView',
+        meta: { title: '切片' },
+        component: () => import('@/views/sliceView/index.vue')
+      }
+    ]
+  },
+  {
+    path: '/pdf',
+    component: Layout,
+    meta: { title: 'PDF管理', icon: 'dashboard' },
+    children: [
+      {
+        path: 'merge',
+        name: 'MergePdf',
+        component: () => import('@/views/pdf/mergePdf/index.vue'),
+        meta: { title: '合并PDF' }
+      },
+      {
+        path: 'stream',
+        name: 'streamPdf',
+        component: () => import('@/views/pdf/mergePdf/index2.vue'),
+        meta: { title: '流式PDF' }
+      },
+      {
+        path: 'paged-js-pdf',
+        name: 'pagedJsPdf',
+        component: () => import('@/views/pdf/pagedjs/index.vue'),
+        meta: { title: 'PagedJSPDF' }
+      },
+         {
+        path: 'vivlio-style-viewer',
+        name: 'vivloStyleViewer',
+        component: () => import('@/views/pdf/vivlioStyleViewer/index.vue'),
+        meta: { title: 'VivloStyleViewer' }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,

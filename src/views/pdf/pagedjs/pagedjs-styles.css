@@ -1,0 +1,57 @@
+/* Paged.js 页眉页脚样式 */
+
+/* 页眉 - 使用 running position */
+.running-header {
+  position: running(header-con);
+  display: block;
+}
+
+.running-header .header-content {
+  font-size: 18px;
+  color: red;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-bottom: 2px solid red;
+}
+
+/* 页脚左侧 - 使用 running position */
+.running-footer-left {
+  position: running(footer-left);
+  display: block;
+}
+
+.running-footer-left .footer-content {
+  font-family: 'Source Han Sans CN', sans-serif;
+  font-size: 10px;
+  color: gray;
+  padding: 5px 10px;
+}
+
+/* @page 规则 - 正确的嵌套语法 */
+@page {
+  size: A4 portrait;
+  margin-top: 30mm;
+  margin-bottom: 15mm;
+  margin-left: 20mm;
+  margin-right: 20mm;
+  background-color: #fff;
+
+  @top-left {
+    content: element(header-con);
+    vertical-align: middle;
+    width: 100%;
+  }
+
+  @bottom-left {
+    content: element(footer-left);
+    vertical-align: middle;
+  }
+
+  @bottom-right {
+    font-size: 10px;
+    content: counter(page) " / " counter(pages);
+    color: gray;
+    vertical-align: middle;
+    padding: 5px 10px;
+  }
+}

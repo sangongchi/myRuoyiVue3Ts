@@ -27,6 +27,7 @@ import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
 
 // svg图标
+// 把 vite-plugin-svg-icons 生成的所有 SVG symbol 自动注入到页面中，让 <SvgIcon /> 能正常使用。没有它，图标不会被注册，也不会显示。
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import elementIcons from '@/components/SvgIcon/svgicon'
@@ -87,7 +88,7 @@ directive(app)
 app.use(ElementPlus, {
   locale: locale,
   // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
+  size: (Cookies.get('size') as 'default' | 'small' | 'large') || 'default'
 })
 
 app.mount('#app')

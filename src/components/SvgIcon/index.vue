@@ -1,5 +1,5 @@
 <template>
-  <svg :class="svgClass" aria-hidden="true">
+  <svg v-if="iconClass" :class="svgClass" aria-hidden="true">
     <use :xlink:href="iconName" :fill="color" />
   </svg>
 </template>
@@ -11,7 +11,8 @@ export default defineComponent({
   props: {
     iconClass: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     },
     className: {
       type: String,
