@@ -132,6 +132,19 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path:'/yuanMaster',
+    component: Layout,
+    meta: { title: '猿大师', icon: 'dashboard' },
+    children: [
+      {
+        path: 'world',
+        name: 'yuanMasterWorld',
+        component: () => import('@/views/yuanMaster/index.vue'),
+        meta: { title: 'yuanMasterWorld' }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
