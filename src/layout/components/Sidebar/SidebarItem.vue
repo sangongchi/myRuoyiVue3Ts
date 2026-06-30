@@ -11,7 +11,9 @@
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'sub-menu-title-noDropdown': !isNest }">
           <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)" />
           <template #title>
-            <span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">{{ onlyOneChild.meta.title }}</span>
+            <span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">
+              {{ onlyOneChild.meta.title }}
+            </span>
           </template>
         </el-menu-item>
       </app-link>
@@ -90,11 +92,11 @@ function resolvePath(routePath: any, routeQuery?: any) {
   if (routeQuery) {
     let query = JSON.parse(routeQuery)
     return {
-      path: getNormalPath(props.basePath + '/' + routePath),
+      path: getNormalPath(routePath.startsWith('/') ? routePath : props.basePath + '/' + routePath),
       query: query
     }
   }
-  return getNormalPath(props.basePath + '/' + routePath)
+  return getNormalPath(routePath.startsWith('/') ? routePath : props.basePath + '/' + routePath)
 }
 
 function hasTitle(title: any) {

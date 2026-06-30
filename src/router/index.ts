@@ -1,6 +1,8 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
 /* Layout */
 import Layout from '@/layout/index.vue'
+import VitePluginRouters from '~pages'
+console.log('VitePluginRouters', VitePluginRouters)
 
 /**
  * Note: 路由配置项
@@ -88,6 +90,12 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/pages',
+    component: Layout,
+    meta: { title: '动态pages', icon: 'dashboard' },
+    children: VitePluginRouters
+  },
+  {
     path: '/slice',
     component: Layout,
     meta: { title: '切片管理', icon: 'dashboard' },
@@ -123,16 +131,22 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/pdf/pagedjs/index.vue'),
         meta: { title: 'PagedJSPDF' }
       },
-         {
+      {
         path: 'vivlio-style-viewer',
         name: 'vivloStyleViewer',
         component: () => import('@/views/pdf/vivlioStyleViewer/index.vue'),
         meta: { title: 'VivloStyleViewer' }
+      },
+      {
+        path: 'report-builder',
+        name: 'ReportBuilder',
+        component: () => import('@/views/pdf/reportBuilder/index.vue'),
+        meta: { title: '报告单生成器' }
       }
     ]
   },
   {
-    path:'/yuanMaster',
+    path: '/yuanMaster',
     component: Layout,
     meta: { title: '猿大师', icon: 'dashboard' },
     children: [
